@@ -32,9 +32,9 @@ Record the values — you will need them throughout this guide:
 
 | Hostname | Private IP | Public IP |
 |----------|------------|-----------|
-| k3s-master-1 | 172.31.43.220 | 35.168.13.127 |
-| k3s-master-2 | 172.31.38.33 | 100.55.14.67 |
-| k3s-master-3 | 172.31.39.5 | 54.172.112.146 |
+| k3s-master-1 | 172.31.36.83 | 54.221.2.149 |
+| k3s-master-2 | 172.31.46.61 | 3.90.244.65 |
+| k3s-master-3 | 172.31.39.117 | 98.87.17.79 |
 
 ---
 
@@ -74,9 +74,9 @@ Add an entry for each node so they can resolve each other by hostname. Replace t
 
 ```sh
 sudo tee -a /etc/hosts <<EOF
-10.0.1.10  k3s-master-1
-10.0.1.11  k3s-master-2
-10.0.1.12  k3s-master-3
+172.31.36.83  k3s-master-1
+172.31.46.61  k3s-master-2
+172.31.39.117  k3s-master-3
 EOF
 ```
 
