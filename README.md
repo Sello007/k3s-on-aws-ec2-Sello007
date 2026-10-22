@@ -133,7 +133,7 @@ sudo kubectl get pods -A
 
 ```sh
 sudo cat /var/lib/rancher/k3s/server/token
-TOKEN- K103ed8ed61e46295ba1052b8f4ca8be5023f282996dd8de0854e1283e6fd4891a9::server:d1ee7de8c1bccba75d97db7cb4009aad...
+TOKEN- K103ed8ed61e46295ba1052b8f...........
 ```
 
 Save this token — you will need it in the next step.
@@ -151,7 +151,7 @@ sudo mkdir -p /etc/rancher/k3s
 # Example for k3s-master-2. Replace IPs and token with your values.
 sudo tee /etc/rancher/k3s/config.yaml <<EOF
 server: https://172.31.37.102:6443
-token: K103ed8ed61e46295ba1052b8f4ca8be5023f282996dd8de0854e1283e6fd4891a9::server:d1ee7de8c1bccba75d97db7cb4009aad...
+token: K103ed8ed61e46295ba1052b8f...........
 node-ip: 172.31.40.161
 advertise-address: 172.31.40.161
 tls-san:
@@ -164,7 +164,7 @@ EOF
 # Example for k3s-master-3. Replace IPs and token with your values.
 sudo tee /etc/rancher/k3s/config.yaml <<EOF
 server: https://172.31.37.102:6443
-token: K103ed8ed61e46295ba1052b8f4ca8be5023f282996dd8de0854e1283e6fd4891a9::server:d1ee7de8c1bccba75d97db7cb4009aad...
+token: K103ed8ed61e46295ba1052b8f...........
 node-ip: 172.31.47.219
 advertise-address: 172.31.47.219
 tls-san:
@@ -205,7 +205,7 @@ k3s-master-3   Ready    control-plane,etcd,master   1m    v1.30.x+k3s1
 scp -i ~/.ssh/$KEY_NAME.pem ubuntu@<master-1-public-ip>:/etc/rancher/k3s/k3s.yaml ~/.kube/k3s.yaml
 
 # Update the server address to the public IP of a master node
-sed -i 's|https://127.0.0.1:6443|https://<master-1-public-ip>:6443|' ~/.kube/k3s.yaml
+sed -i 's|https://127.0.0.1:6443|https://54.242.116.29:6443|' ~/.kube/k3s.yaml
 
 # Use this kubeconfig
 export KUBECONFIG=~/.kube/k3s.yaml
@@ -224,7 +224,7 @@ kubectl apply -f web-app.yml
 kubectl get pods,svc
 
 # Access the app — use the public IP of any master node and the NodePort
-curl http://<master-public-ip>:30080
+curl http://54.242.116.29:30080
 ```
 
 Expected output: `welcome to my web app!`
@@ -315,9 +315,9 @@ To add a dedicated worker (agent) node, launch an additional EC2 instance (any t
 # On the new worker node
 sudo mkdir -p /etc/rancher/k3s
 sudo tee /etc/rancher/k3s/config.yaml <<EOF
-server: https://10.0.1.10:6443
-token: <token-from-master-1>
-node-ip: <worker-private-ip>
+server: https://172.31.37.102:6443
+token: K103ed8ed61e46295ba1052b8f...........
+node-ip: 172.31.37.102
 EOF
 
 curl -sfL https://get.k3s.io | sh -s - agent
