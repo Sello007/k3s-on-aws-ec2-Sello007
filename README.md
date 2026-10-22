@@ -32,9 +32,9 @@ Record the values — you will need them throughout this guide:
 
 | Hostname | Private IP | Public IP |
 |----------|------------|-----------|
-| k3s-master-1 | 172.31.36.83 | 54.221.2.149 |
-| k3s-master-2 | 172.31.46.61 | 3.90.244.65 |
-| k3s-master-3 | 172.31.39.117 | 98.87.17.79 |
+| k3s-master-1 | 172.31.37.102 |  54.242.116.29 |
+| k3s-master-2 | 172.31.40.161 | 52.90.181.131 |
+| k3s-master-3 | 172.31.47.219 | 3.85.133.221 |
 
 ---
 
@@ -74,9 +74,9 @@ Add an entry for each node so they can resolve each other by hostname. Replace t
 
 ```sh
 sudo tee -a /etc/hosts <<EOF
-172.31.36.83  k3s-master-1
-172.31.46.61  k3s-master-2
-172.31.39.117  k3s-master-3
+172.31.37.102  k3s-master-1
+172.31.40.161  k3s-master-2
+172.31.47.219  k3s-master-3
 EOF
 ```
 
@@ -101,11 +101,11 @@ sudo mkdir -p /etc/rancher/k3s
 # Replace 1.2.3.4  with the public IP / Elastic IP of k3s-master-1
 sudo tee /etc/rancher/k3s/config.yaml <<EOF
 cluster-init: true
-node-ip: 10.0.1.10
-advertise-address: 10.0.1.10
+node-ip: 172.31.37.102
+advertise-address: 172.31.37.102
 tls-san:
-  - 10.0.1.10
-  - 1.2.3.4
+  - 172.31.37.102
+  - 54.242.116.29
   - k3s-master-1
 disable: [servicelb, traefik]
 EOF
@@ -136,7 +136,7 @@ sudo cat /var/lib/rancher/k3s/server/token
 ```
 
 Save this token — you will need it in the next step.
-
+TOKEN- K103ed8ed61e46295ba1052b8f4ca8be5023f282996dd8de0854e1283e6fd4891a9::server:d1ee7de8c1bccba75d97db7cb4009aad...
 ---
 
 ## Step 4: Join Master Nodes 2 and 3
@@ -150,14 +150,27 @@ sudo mkdir -p /etc/rancher/k3s
 
 # Example for k3s-master-2. Replace IPs and token with your values.
 sudo tee /etc/rancher/k3s/config.yaml <<EOF
-server: https://10.0.1.10:6443
-token: <token-from-master-1>
-node-ip: 10.0.1.11
-advertise-address: 10.0.1.11
+server: https://172.31.37.102:6443
+token: K103ed8ed61e46295ba1052b8f4ca8be5023f282996dd8de0854e1283e6fd4891a9::server:d1ee7de8c1bccba75d97db7cb4009aad...
+node-ip: 172.31.40.161
+advertise-address: 172.31.40.161
 tls-san:
-  - 10.0.1.11
-  - 1.2.3.5
+  - 172.31.40.161
+  - 52.90.181.131
   - k3s-master-2
+disable: [servicelb, traefik]
+EOF
+```
+# Example for k3s-master-3. Replace IPs and token with your values.
+sudo tee /etc/rancher/k3s/config.yaml <<EOF
+server: https://172.31.37.102:6443
+token: K103ed8ed61e46295ba1052b8f4ca8be5023f282996dd8de0854e1283e6fd4891a9::server:d1ee7de8c1bccba75d97db7cb4009aad...
+node-ip: 172.31.47.219
+advertise-address: 172.31.47.219
+tls-san:
+  - 172.31.47.219
+  - 3.85.133.221
+  - k3s-master-3
 disable: [servicelb, traefik]
 EOF
 ```
