@@ -133,10 +133,10 @@ sudo kubectl get pods -A
 
 ```sh
 sudo cat /var/lib/rancher/k3s/server/token
+TOKEN- K103ed8ed61e46295ba1052b8f4ca8be5023f282996dd8de0854e1283e6fd4891a9::server:d1ee7de8c1bccba75d97db7cb4009aad...
 ```
 
 Save this token — you will need it in the next step.
-TOKEN- K103ed8ed61e46295ba1052b8f4ca8be5023f282996dd8de0854e1283e6fd4891a9::server:d1ee7de8c1bccba75d97db7cb4009aad...
 ---
 
 ## Step 4: Join Master Nodes 2 and 3
