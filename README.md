@@ -31,11 +31,10 @@ This guide walks you through deploying a **K3s HA cluster with 3 master (server)
 Record the values — you will need them throughout this guide:
 
 | Hostname | Private IP | Public IP |
-|----------|------------|-----------|
-| k3s-master-1 | 172.31.37.102 |  54.242.116.29 |
-| k3s-master-2 | 172.31.40.161 | 52.90.181.131 |
-| k3s-master-3 | 172.31.47.219 | 3.85.133.221 |
-
+| :--- | :--- | :--- |
+| k3s-master-1 | 172.31.37.78 | 52.90.201.27 |
+| k3s-master-2 | 172.31.46.196 | 34.204.75.139 |
+| k3s-master-3 | 172.31.39.161 | 52.90.141.171 |
 ---
 
 ## Step 2: Prepare All Nodes
@@ -102,13 +101,11 @@ sudo mkdir -p /etc/rancher/k3s
 sudo tee /etc/rancher/k3s/config.yaml <<EOF
 cluster-init: true
 node-ip: 172.31.37.102
-advertise-address: 172.31.37.102
 tls-san:
   - 172.31.37.102
   - 54.242.116.29
   - k3s-master-1
 disable: [servicelb, traefik]
-EOF
 ```
 
 > **Why `disable: [servicelb, traefik]`?**
@@ -151,28 +148,22 @@ sudo mkdir -p /etc/rancher/k3s
 # Example for k3s-master-2. Replace IPs and token with your values.
 sudo tee /etc/rancher/k3s/config.yaml <<EOF
 server: https://172.31.37.102:6443
-token: K103ed8ed61e46295ba1052b8f...........
 node-ip: 172.31.40.161
-advertise-address: 172.31.40.161
 tls-san:
   - 172.31.40.161
   - 52.90.181.131
   - k3s-master-2
 disable: [servicelb, traefik]
-EOF
 ```
 # Example for k3s-master-3. Replace IPs and token with your values.
 sudo tee /etc/rancher/k3s/config.yaml <<EOF
 server: https://172.31.37.102:6443
-token: K103ed8ed61e46295ba1052b8f...........
 node-ip: 172.31.47.219
-advertise-address: 172.31.47.219
 tls-san:
   - 172.31.47.219
   - 3.85.133.221
   - k3s-master-3
 disable: [servicelb, traefik]
-EOF
 ```
 
 ### 4.2 — Install K3s as a server node
